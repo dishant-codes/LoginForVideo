@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login page</title>
+</head>
+<body>
+
+<form id="login" method="post">
+    <input id="email" type="text" placeholder="email" name="email">
+    <input id="password" type="password" placeholder="password" name="password">
+    <button type="submit">Login</button>
+</form>
+    <button id="logout">Logout</button>
+
+<div id="videos">
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
+<script type="module">
+    // Add Firebase products that you want to use
+    const firebaseConfig = {
+        apiKey: "AIzaSyBihNYhxUkxwpy_pTa4p_Fua-nEhXMldPo",
+        authDomain: "test-46985.firebaseapp.com",
+        projectId: "test-46985",
+        storageBucket: "test-46985.appspot.com",
+        messagingSenderId: "594245353510",
+        appId: "1:594245353510:web:4ef5d50ccbbcd7c089a6e7"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    $(document).ready(() => {
+        $("#login").submit((e) => {
+            e.preventDefault()
+            let email = $("#email").val();
+            let password = $("#password").val();
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    var user = userCredential.user;
+                    alert("Login Success");
+                    $("#videos").append("<video id=\"video\" width=\"400\" height=\"200\" controls controlsList=\"nodownload\">\n" +
+                        "    <source src=\"https://firebasestorage.googleapis.com/v0/b/test-46985.appspot.com/o/06_day_321_rays_garden_preview.mp4?alt=media&token=72543068-6445-44a3-b2f7-558dc17edf9d\" type=\"video/mp4\" />\n" +
+                        "    Your browser does not support the video element.\n" +
+                        "  </video>");
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    alert(errorMessage);
+                });
+        })
+
+        $("#logout").click(()=>{
+            firebase.auth().signOut().then(() => {
+                $("#video").remove();
+            }).catch((error) => {
+                // An error happened.
+            });
+        })
+
+    })
+</script>
+
+
+</body>
+</html>
