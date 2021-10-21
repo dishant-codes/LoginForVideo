@@ -38,6 +38,7 @@
     firebase.initializeApp(firebaseConfig);
 
     $(document).ready(() => {
+        document.addEventListener('contextmenu', event => event.preventDefault());
         $("#login").submit((e) => {
             e.preventDefault()
             let email = $("#email").val();
